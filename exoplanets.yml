@@ -1,0 +1,143 @@
+openapi: 3.0.3
+info:
+  title: Exoplanets
+  description: |
+    Exoplanets are planets found beyond our Solar System.
+    This is a REST API to manage them. For simplicity only the exoplanet resource is managed, but feel free to extend it.
+    In particular there is no authentication, paging nor search. Feel free to try it out. Happy hacking!
+  contact:
+    email: leocofre@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 0.0.1
+paths:
+  /exoplanets:
+    post:
+      summary: Add a new exoplanet to the catalog
+      operationId: addExoplanet
+      requestBody:
+        description: Exoplanet we want to add to the catalog
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Exoplanet'
+        required: true
+      responses:
+        201:
+          description: The exoplanet was successfully created
+          content: {}
+        404:
+          description: Exoplanet name already exists
+          content: {}
+        405:
+          description: Invalid input
+          content: {}
+      x-codegen-request-body-name: body
+    get:
+      summary: Returns all exoplanets in the catalog
+      description: This endpoint does not provide paging nor filtering.
+      operationId: getExoplanets
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Exoplanet'
+  /exoplanets/{exoplanetId}:
+    get:
+      summary: Find exoplanet by ID
+      description: Returns the exoplanet with the indicated ID
+      operationId: getExoplanetById
+      parameters:
+      - name: exoplanetId
+        in: path
+        description: ID of exoplanet to return
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Exoplanet'
+        404:
+          description: Exoplanet not found
+          content: {}
+    put:
+      summary: Update existing exoplanet
+      operationId: updateExoplanet
+      parameters:
+      - name: exoplanetId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Updated exoplanet
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Exoplanet'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content: {}
+        400:
+          description: Invalid exoplanet supplied
+          content: {}
+        404:
+          description: Exoplanet not found
+          content: {}
+      x-codegen-request-body-name: body
+    delete:
+      summary: Deletes an exoplanet
+      operationId: deleteExoplanet
+      parameters:
+      - name: exoplanetId
+        in: path
+        description: Exoplanet id to delete
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content: {}
+        404:
+          description: Exoplanet not found
+          content: {}
+components:
+  schemas:
+    Exoplanet:
+      type: object
+      required: 
+      - name
+      properties:
+        name:
+          description: Official exoplanet's name. Must be unique
+          type: string
+        lightYears:
+          description: Distance from us
+          type: number
+          format: float
+        mass:
+          description: Mass relative to Earth
+          type: number
+          format: float
+        stellarMagnitude:
+          description: Apparent brightness
+          type: number
+          format: float
+        link:
+          description: Link with more info on the exoplanet
+          type: string
