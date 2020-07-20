@@ -4,13 +4,18 @@ info:
   description: |
     Exoplanets are planets found beyond our Solar System.
     This is a REST API to manage them. For simplicity only the exoplanet resource is managed, but feel free to extend it.
-    In particular there is no authentication, paging nor search. Feel free to try it out. Happy hacking!
+    In particular there is no authentication, paging nor search.
+    
+    Happy hacking!
   contact:
     email: leocofre@gmail.com
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 0.0.1
+servers: 
+    - url: http://localhost:5000
+      description: Localhost server
 paths:
   /exoplanets:
     post:
@@ -91,11 +96,11 @@ paths:
         200:
           description: successful operation
           content: {}
-        400:
-          description: Invalid exoplanet supplied
-          content: {}
         404:
           description: Exoplanet not found
+          content: {}
+        405:
+          description: Invalid exoplanet supplied
           content: {}
       x-codegen-request-body-name: body
     delete:
@@ -123,21 +128,30 @@ components:
       required: 
       - name
       properties:
+        id:
+          description: Resource Id. Ignored when creating or updating
+          type: integer
+          example: 1
         name:
           description: Official exoplanet's name. Must be unique
           type: string
-        lightYears:
+          example: YZ Ceti c
+        year_discovered:
+          description: Year it was discovered
+          type: integer
+          example: 2017
+        light_years:
           description: Distance from us
           type: number
           format: float
+          example: 12
         mass:
           description: Mass relative to Earth
           type: number
           format: float
-        stellarMagnitude:
-          description: Apparent brightness
-          type: number
-          format: float
+          example: 0.98
         link:
           description: Link with more info on the exoplanet
           type: string
+          format: uri
+          example: https://exoplanets.nasa.gov/exoplanet-catalog/7182/yz-ceti-c/
