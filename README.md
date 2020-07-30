@@ -14,6 +14,8 @@ And run the database server with:
 $ java -cp ./h2-1.4.200.jar org.h2.tools.Server -tcp -tcpAllowOthers -tcpPort 5234 -baseDir ./ -ifNotExists
 ```
 
+The easiest way to try the endpoints in both APIs is to use the [Swagger Editor with our API definition](https://editor.swagger.io/?url=https://raw.githubusercontent.com/lcofre/rest-api/master/exoplanets.yml). All endpoints have a "Try it out" button in the top right.
+
 ## Python
 First create the virtual environment and install required  packages:
 ```console
@@ -27,4 +29,14 @@ Then the api can be started with
 (env) $ python python/api.py
 ```
 
-The easiest way to try the endpoints is to use the [Swagger Editor with our API definition](https://editor.swagger.io/?url=https://raw.githubusercontent.com/lcofre/rest-api/master/exoplanets.yml). All endpoints have a "Try it out" button in the top right.
+## Node.js
+First install dependencies:
+```console
+$ cd node.js
+$ npm install
+```
+
+Then start the API with:
+```console
+$ node api.js
+```
