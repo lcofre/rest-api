@@ -2,8 +2,8 @@ const persistence = require('./persistence');
 const express = require('express');
 const cors = require('cors');
 const Joi = require('joi');
-const app = express();
 
+const app = express();
 app.use(cors());
 app.use(express.json());
 
@@ -14,16 +14,17 @@ const exoplanetSchema = Joi.object({
     light_years: Joi.number(),
     mass: Joi.number(),
     link: Joi.string().uri()
-});
+})
+options({ stripUnknown: true });
 
 app.get('/exoplanets', (req, res) => persistence.getAll((result) => res.send(result)));
 
 app.get('/exoplanets/:id', (req, res) => {
     persistence.get(req.params.id, (result) => {
-        if(result.length == 1)
-            res.send(result[0]);
+        if(result)
+            res.send(result);
         else
-            res.status(404).send();
+            res.status(404);
     });
 });
 
@@ -34,7 +35,7 @@ app.post('/exoplanets', (req, res) => {
         res.status(405).send(error.details[0].message);
 
     persistence.create(value);
-    res.status(201).send();
+    res.status(201);
 });
 
 app.put('/exoplanets/:id', (req, res) => {
@@ -45,22 +46,22 @@ app.put('/exoplanets/:id', (req, res) => {
     }
 
     persistence.get(req.params.id, (result) => {
-        if(result.length == 1) {
+        if(result) {
             persistence.update(req.params.id, value);
-            res.status(201).send();
+            res.status(201);
         } else {
-            res.status(404).send();
+            res.status(404);
         }
     });
 });
 
 app.delete('/exoplanets/:id', (req, res) => {
     persistence.get(req.params.id, (result) => {
-        if(result.length == 1) {
+        if(result) {
             persistence.delete(req.params.id);
-            res.send(); 
+            res; 
         } else {
-            res.status(404).send();
+            res.status(404);
         }            
     });
 });

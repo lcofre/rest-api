@@ -58,7 +58,9 @@ module.exports = {
   },
   get: function(id, callback) {
     getH2((err) => queryDB(`SELECT * FROM exoplanets WHERE id = ${id}`, (result) => {
-      result.toObjArray((err, results) => { return callback(results); })
+      result.toObjArray((err, results) => { 
+        return (results.length > 0) ? callback(results[0]) : callback(null);
+      })
     }));
   },
   create: function(exoplanet) {
